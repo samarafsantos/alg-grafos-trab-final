@@ -6,12 +6,6 @@ import "./style.css";
 
 type LatLng = [number, number];
 
-const PREDEFINED_MARKERS: LatLng[] = [
-  [-22.8580493, -43.2327977],
-  [-22.8593942, -43.2308942],
-  [-22.8635378, -43.2275421],
-];
-
 // mocks api call
 async function mockFetchPath(
   origin: LatLng,
@@ -28,7 +22,7 @@ async function mockFetchPath(
   });
 }
 
-export default function MapChart() {
+export default function MapChart({ data }: any) {
   const [origin, setOrigin] = useState<LatLng | null>(null);
   const [destination, setDestination] = useState<LatLng | null>(null);
   const [path, setPath] = useState<LatLng[]>([]);
@@ -57,39 +51,42 @@ export default function MapChart() {
   }, [origin, destination]);
 
   return (
-    <MapContainer
-      center={[-22.8580493, -43.2327977]}
-      zoom={14}
-      scrollWheelZoom
-      className="map-container"
-    >
-      <TileLayer
-        attribution="&copy; OpenStreetMap contributors"
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-
-      {PREDEFINED_MARKERS.map((coords, idx) => (
-        <Marker
-          key={idx}
-          position={coords}
-          eventHandlers={{
-            click: () => handleMarkerClick(coords),
-          }}
-          icon={L.icon({
-            iconUrl:
-              origin === coords
-                ? "https://maps.google.com/mapfiles/ms/icons/green-dot.png"
-                : destination === coords
-                ? "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-                : "https://maps.google.com/mapfiles/ms/icons/red-dot.png",
-            iconSize: [32, 32],
-          })}
+    data &&
+    data.length !== 0 && (
+      <MapContainer
+        center={[-24.9375, -47.3125]}
+        zoom={14}
+        scrollWheelZoom
+        className="map-container"
+      >
+        <TileLayer
+          attribution="&copy; OpenStreetMap contributors"
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-      ))}
 
-      {path.length > 0 && (
-        <Polyline color="red" positions={path} lineJoin="round" />
-      )}
-    </MapContainer>
+        {data.map((coords, idx) => (
+          <Marker
+            key={idx}
+            position={coords}
+            eventHandlers={{
+              click: () => handleMarkerClick(coords),
+            }}
+            icon={L.icon({
+              iconUrl:
+                origin === coords
+                  ? "https://maps.google.com/mapfiles/ms/icons/green-dot.png"
+                  : destination === coords
+                  ? "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+                  : "https://maps.google.com/mapfiles/ms/icons/red-dot.png",
+              iconSize: [32, 32],
+            })}
+          />
+        ))}
+
+        {path.length > 0 && (
+          <Polyline color="red" positions={path} lineJoin="round" />
+        )}
+      </MapContainer>
+    )
   );
 }
