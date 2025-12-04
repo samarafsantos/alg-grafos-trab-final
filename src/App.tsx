@@ -12,12 +12,25 @@ function App() {
       try {
         setLoading(true);
         const result = await fetch(
-          "http://localhost:8000/markers?limit=50"
+          "http://localhost:8000/markers?limit=1000"
         ).then((r) => r.json());
-        setData(result.items.map((i) => [i.lat, i.lon]));
+
+        if (!result.items || !Array.isArray(result.items)) {
+          throw new Error("Invalid API response format");
+        }
+
+        const mappedData = result.items
+          .filter(
+            (i) => i && typeof i.lat === "number" && typeof i.lon === "number"
+          )
+          .map((i) => ({
+            coords: [i.lat, i.lon],
+            waveHeight: i.hs || 0,
+          }));
+
+        setData(mappedData);
       } catch (err) {
         setError("Failed to load map data");
-        console.error(err);
       } finally {
         setLoading(false);
       }

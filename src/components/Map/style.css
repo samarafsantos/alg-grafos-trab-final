@@ -137,6 +137,14 @@
   font-size: 0.9rem;
 }
 
+.error-badge {
+  margin-top: 1rem;
+  background: rgba(255, 100, 100, 0.9);
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
 .mini-spinner {
   width: 16px;
   height: 16px;
@@ -190,6 +198,34 @@
 
 .legend-dot.default {
   background: #ef4444;
+}
+
+.legend-dot.path {
+  background: #fbbf24;
+}
+
+.wave-legend {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.wave-legend h4 {
+  margin: 0 0 1rem 0;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.wave-scale {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.wave-scale span {
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
 @media (max-width: 1024px) {
