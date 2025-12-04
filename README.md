@@ -1,75 +1,102 @@
-# React + TypeScript + Vite
+# 🗺️ Maritime Route Planner
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React + TypeScript application for visualizing maritime routes with wave height data. This application allows users to select origin and destination points on an interactive map and calculates the optimal path considering wave conditions.
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Interactive Map**: Visualize maritime locations with markers on an OpenStreetMap-based map
+- **Route Planning**: Click markers to select origin and destination points
+- **Wave Height Visualization**:
+  - Color-coded tooltips showing wave height at each location
+  - Wave conditions (Calm, Light, Moderate, Rough, High, Very High)
+  - Detailed coordinate information (latitude/longitude)
+- **Path Calculation**: Real-time route calculation via backend API
+- **Visual Feedback**:
+  - Green marker for origin point
+  - Blue marker for destination point
+  - Yellow markers for intermediate path points
+  - Purple polyline connecting the path
 
-## React Compiler
+## 🚀 Getting Started
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+### Prerequisites
 
-Note: This will impact Vite dev & build performances.
+- Node.js (v20.19.0 or v22.12.0+)
+- npm
+- Backend API running on `localhost:8000` with the following endpoints:
+  - `GET /markers?limit={number}` - Returns available maritime points
+  - `GET /path?lat_o={lat}&lon_o={lon}&lat_d={lat}&lon_d={lon}` - Calculates optimal path
 
-## Expanding the ESLint configuration
+### Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Running the Application
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+The application will be available at `http://localhost:5173/`
+
+### Building for Production
+
+```bash
+npm run build
+npm run preview
+```
+
+## 🛠️ Technology Stack
+
+- **React** - UI framework
+- **TypeScript** - Type-safe JavaScript
+- **Vite** - Build tool and dev server
+- **Leaflet** - Interactive map library
+- **React-Leaflet** - React bindings for Leaflet
+
+## 📋 API Integration
+
+The application expects the backend API to return data in the following formats:
+
+### Markers Endpoint
+
+```json
+{
+  "items": [
+    {
+      "lat": -23.15625,
+      "lon": -43.15625,
+      "hs": 0.895
+    }
+  ]
+}
+```
+
+### Path Endpoint
+
+```json
+{
+  "origin": { "lat": -23.15625, "lon": -43.15625 },
+  "destination": { "lat": -23.25, "lon": -43.15625 },
+  "path": [
+    { "node": 183, "lat": -23.15625, "lon": -43.15625, "hs": 0.895 },
+    { "node": 182, "lat": -23.15625, "lon": -43.25, "hs": 0.89 }
+  ],
+  "num_points": 2
+}
+```
+
+## 🎨 Usage
+
+1. Wait for the map to load maritime points
+2. Click on any marker to set it as the **origin** (turns green)
+3. Click on another marker to set it as the **destination** (turns blue)
+4. The application will automatically calculate and display the optimal path
+5. Hover over any marker to see wave height and location details
+6. Click "Reset Route" to clear and start over
+
+## 📄 License
+
+This project is part of a university assignment for Algorithm and Graph Theory course.
